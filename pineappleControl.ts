@@ -1,10 +1,12 @@
+import { AccountHttp, AccountListener, NEMLibrary, NetworkTypes, Address, TransactionTypes, TransferTransaction, PlainMessage, HashData } from 'nem-library';
+import { sys } from 'typescript';
+import { exec } from 'child_process';
 
-import { AccountHttp, AccountListener, NEMLibrary, NetworkTypes, Address, TransactionTypes, TransferTransaction, PlainMessage, HashData } from "nem-library";
 
 // Initialize NEMLibrary for TEST_NET Network
 NEMLibrary.bootstrap(NetworkTypes.TEST_NET);
-
 //Hotspot address to make the payment to
+
 const HotspotAddress = new Address("TCCXQP-JNPXAZ-FKV2IZ-HIFLAG-TSN42W-PNAQI6-XGK3");
 
 const accountHttp = new AccountHttp();
@@ -35,14 +37,25 @@ function requestConnection(){
     }
 }
 
-//TODO: gives access to the internet
 function grantAccess(account: Address, duration: number){
-    console.log("access given to " + account.plain() + " for " + duration/(3600*1000) + " hours");
+    // exec('./commands/unblock.sh 10.42.0.15', function(error:any, stdout:any, stderr:any) {
+    //     if(error) {
+    //         throw error;
+    //     } else {
+    //         console.log("access given to " + account.plain() + " for " + duration/(3600*1000) + " hours");
+    //     }
+    // });
 }
 
 //TODO: revokes access to a user
 function revokeAccess(account: Address){
-    console.log("access revoked for " + account.plain());
+    // exec('./commands/block.sh 10.42.0.15', function(error:any, stdout:any, stderr:any) {
+    //     if(error) {
+    //         throw error;
+    //     } else {
+    //         console.log("access revoked for " + account.plain());
+    //     }
+    // });
 }
 
 //checks for payments sent
