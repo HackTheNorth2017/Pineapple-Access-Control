@@ -1,0 +1,29 @@
+{
+  "name": "pineapple_access_control",
+  "version": "1.0.0",
+  "description": "Contains the hotspot server and the smart contracts for managing access through pineapple payments.",
+  "main": "pineappleControl.js",
+  "scripts": {
+    "start": "npm run build && npm run watch",
+    "build": "tsc",
+    "serve": "nodemon pineappleControl.js",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve\"",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HackTheNorth2017/pineapple_access_control.git"
+  },
+  "bugs": {
+    "url": "https://github.com/HackTheNorth2017/pineapple_access_control/issues"
+  },
+  "homepage": "https://github.com/HackTheNorth2017/pineapple_access_control#readme",
+  "dependencies": {
+    "concurrently": "^3.5.0",
+    "express": "^4.15.4",
+    "nem-library": "^0.10.0",
+    "nodemon": "^1.12.1",
+    "typescript": "^2.5.2"
+  }
+}
