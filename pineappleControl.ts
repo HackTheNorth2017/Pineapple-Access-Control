@@ -134,8 +134,32 @@ app.get('/', function(req: any, res: any) {
     res.send('Hello This is a pineapple');
 });
 
+//Call that gets information about the hotspot (price and address)
 app.get('/health', function(req: any, res: any) {
     res.send(requestConnection());
+});
+
+//Call that gets information about a certain user (by address) Returns seconds left (0 if no seconds left)
+app.get('/status', function(req: any, res: any) {
+    var address = req.query['address'];
+    if (!address){
+        res.status(400).send('missing address field');
+    }
+    let filteredUsers = currentUsers.filter(user => {
+        return user.account.plain() === address;
+    });
+    if(filteredUsers.length === 0){
+        res.send({
+            timeLeft: 0
+        });
+    }
+    else{
+        let now = new Date().getTime();
+        let millisecondsLeft = (filteredUsers[0].start+filteredUsers[0].duration)-now;
+        res.send({
+            timeLeft: millisecondsLeft/1000
+        });
+    }
 });
 
 app.listen(3000, function() {
