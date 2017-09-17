@@ -28,10 +28,10 @@ let consumedTransactions: HashData[] = [];
 
 //Asks the hotspot for connection info
 function requestConnection(){
-    let pricePerHalfHour = 0.5;
+    let pricePerHour = 1;
     return {
-        pricePerHalfHour: pricePerHalfHour,
-        address: HotspotAddress
+        pricePerHour: pricePerHour,
+        address: HotspotAddress.plain()
     }
 }
 
@@ -83,8 +83,7 @@ function checkPayments(){
                 let filteredUsers = currentUsers.filter(user => {
                     return user.account.plain() === signer.address.plain();
                 });
-                if(filteredUsers.length > 0){                   
-                    console.log("already a user");
+                if(filteredUsers.length > 0){
                     return;
                 }
                 else { //else add
@@ -93,7 +92,7 @@ function checkPayments(){
                     let start = new Date().getTime();
                     const divisibility = 1;
                     let realQuantity = quantity / Math.pow(10, divisibility);
-                    let duration = (realQuantity/2)*3600*1000;
+                    let duration = realQuantity*3600*1000;
                     let newUser = new User(signer.address, start, duration);
                     currentUsers.push(newUser);
                     grantAccess(newUser.account, duration);
@@ -107,7 +106,7 @@ function checkPayments(){
 function checkUsers(){
     currentUsers.map(user => {
         let now = new Date().getTime();
-        if(user.start + user.duration <= now){
+        if(user.start + (user.duration) <= now){
             revokeAccess(user.account);
             currentUsers = currentUsers.filter(x => x !== user);
         }
@@ -116,8 +115,8 @@ function checkUsers(){
 
 let request = requestConnection();
 console.log("--------------------");
-console.log("address: " + request.address.plain());
-console.log("price: " + request.pricePerHalfHour + " pineapples / half hour");
+console.log("address: " + request.address);
+console.log("price: " + request.pricePerHour + " pineapples / half hour");
 console.log("--------------------");
 
 setInterval(function(){
@@ -126,7 +125,8 @@ setInterval(function(){
     console.log("number of users: " + currentUsers.length);
 }, 10000);
 
-// SERVER
+// API SERVER
+
 var express = require('express');
 var app = express();
 
